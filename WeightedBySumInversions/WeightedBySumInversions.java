@@ -31,5 +31,10 @@ public class WeightedBySumInversions {
         }
         long left_inversion = sort_and_count(left_size, left_array);
         long right_inversion = sort_and_count(right_ size, right_array);
+        long middle_inversion = merge_and_count(left_array, right_array);
+
+        long inversions = left_inversion[0] + right_inversion[0] + middle_inversion[0];
+        middle_inversion[0] = inversions;
+        return middle_inversion;
     }
 }
