@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+import java.util.Arrays;
 public class WeightedBySumInversions {
     public static void main(String[] args) throws Exception {
         // Create scanner
@@ -11,7 +11,8 @@ public class WeightedBySumInversions {
         for(int i = 1; i < size; i++) {
             numbers[i] = read.nextInt();
         }
-
+        long[] result = sort_and_count(size, numbers);
+        System.out.println(Arrays.toString(result));
     }
 
     public static long[] sort_and_count(int size, long[] numbers) {
@@ -29,12 +30,31 @@ public class WeightedBySumInversions {
         for(int j = 1; j < right_size; ++j) { 
             right_array[j] = numbers[midpoint + 1 + j];
         }
-        long left_inversion = sort_and_count(left_size, left_array);
-        long right_inversion = sort_and_count(right_ size, right_array);
-        long middle_inversion = merge_and_count(left_array, right_array);
+        long[] left_inversion = sort_and_count(left_size, left_array);
+        long[] right_inversion = sort_and_count(right_ size, right_array);
+        long[] middle_inversion = merge_and_count(size, left_array, right_array);
 
         long inversions = left_inversion[0] + right_inversion[0] + middle_inversion[0];
         middle_inversion[0] = inversions;
         return middle_inversion;
+    }
+
+    public static long[] merge_and_count(int size, long[] left_array, long[] right_array) {
+        long[] merged_array = new long[size + 1];
+        int i = 1;
+        int j = 1;
+        long inversions = 0;
+        for(int k = 1; k < size; k++) {
+            if(j > size || left_array[i] < right_array[j]) {
+                merged_array[k] = left_array[i];
+                i++;
+            } else {
+                merged_array = right_array[j];
+                j++;
+                inversions += size + 1 - i;
+            }
+        }
+        merged_array[0] = inversions;
+        return merged_array;
     }
 }
